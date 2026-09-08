@@ -32,7 +32,11 @@ The browser host uses `web_sys::window`, DOM canvas creation, winit and egui. It
 
 Two correctness risks need compatibility tests: the browser render sink inherits default no-op EFB readback/flush hooks that differ from the native sink; IPL-HLE does not attach the same Macronix EXI device as the real-IPL path. Neither observation proves a specific Melee failure.
 
-`rust-toolchain.toml` pins Rust 1.96.0. `chipi-spec` and `solstice` submodules are build inputs. `.github/workflows/deploy-wasm.yml` builds regular and debug wasm-pack packages. The local unmodified `--locked` WASM attempt failed because the web lockfile needs updating. An unlocked baseline was attempted without changing emulator source. Parallel compilation was stopped when it saturated the host, then resumed with two build jobs. Final build results are recorded below when available.
+`rust-toolchain.toml` pins Rust 1.96.0. `chipi-spec` and `solstice` submodules are build inputs. `.github/workflows/deploy-wasm.yml` builds regular and debug wasm-pack packages. The local unmodified `--locked` WASM attempt failed because the web lockfile needs updating. Parallel compilation was stopped when it saturated the host, then resumed with two build jobs.
+
+The native release build passed in 11 minutes 54 seconds, and `tinyapp --help` passed. The unmodified WASM release build passed in 5 minutes 1 second using the unlocked upstream build path. Packaging with wasm-pack, including wasm-opt, passed in 1 minute 31 seconds. The original lockfile was restored after these baseline checks; upstream emulator source remained unchanged.
+
+A bounded native interpreter probe then opened the validated disc through a file-backed `Dvd` and the upstream IPL-HLE path. It reached apploader entry `0x81200268` after 10 CPU steps and DOL entry `0x8000522C` after 853,322 steps. The probe stopped at DSP activation after 1,124,870 steps, with PC `0x80344680`, LR `0x80344620` and DSP PC `0x8000`, because no local DSP firmware had been supplied. Repeated runs agreed. The disc serviced 17 reads totaling 4,608,884 bytes. The renderer was empty, so these measurements establish boot progress only, not visible title-screen or gameplay compatibility.
 
 ## Melee reference and baseline
 

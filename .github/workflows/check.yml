@@ -31,3 +31,51 @@ jobs:
         run: python -m compileall -q tools tests
       - name: Check whitespace
         run: git diff --check HEAD^
+
+  browser-host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run format:check
+      - name: Check worker and launcher syntax
+        run: |
+          node --check web/main.mjs
+          node --check web/worker.mjs
+
+  runtime-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Read the pinned runtime revision
+        id: runtime
+        run: node -e "const p = require('./runtime.lock.json'); if (!/^[a-f0-9]{40}$/.test(p.gecko.revision)) throw Error('Invalid runtime revision'); console.log('revision=' + p.gecko.revision)" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          repository: frankischilling/gecko
+          ref: ${{ steps.runtime.outputs.revision }}
+          path: .private/ci-gecko
+      - name: Initialize runtime build specifications
+        working-directory: .private/ci-gecko
+        run: git submodule update --init --depth 1 --recursive submodules/chipi-spec submodules/solstice
+      - uses: dtolnay/rust-toolchain@1.96.0
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: 'v0.15.0'
+      - name: Build pinned Gecko WASM
+        working-directory: .private/ci-gecko
+        run: wasm-pack build crates/web --target web --out-dir pkg --out-name gecko_web --release --no-opt -- --locked
+      - run: npm ci
+      - name: Build the application against the pinned runtime
+        run: npm run build -- --runtime-dir "$GITHUB_WORKSPACE/.private/ci-gecko/crates/web/pkg"
