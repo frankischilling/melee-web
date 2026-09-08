@@ -1,0 +1,20 @@
+{
+  "name": "melee-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/build.mjs",
+    "start": "node scripts/serve.mjs",
+    "format": "prettier --write web scripts tests/*.test.mjs package.json",
+    "format:check": "prettier --check web scripts tests/*.test.mjs package.json"
+  },
+  "devDependencies": {
+    "prettier": "3.9.6"
+  }
+}

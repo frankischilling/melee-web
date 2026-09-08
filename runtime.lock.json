@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "gecko": {
+    "repository": "https://github.com/frankischilling/gecko",
+    "revision": "a30d52239df5e8697eefd745d25976c209c267d2",
+    "upstreamRepository": "https://github.com/ioncodes/gecko",
+    "auditedUpstreamRevision": "da39be17b22eb7316e772d2369da15df3a52f7f0"
+  },
+  "build": {
+    "rust": "1.96.0",
+    "target": "wasm32-unknown-unknown",
+    "wasmPack": "0.15.0",
+    "profile": "release",
+    "wasmOpt": false
+  }
+}

@@ -13,7 +13,7 @@ The project is split across `frankischilling/melee-web`, `frankischilling/gecko`
 - [x] Write synthetic tests for a publication check that rejects private paths, binary content, large files, symlinks, and unreviewed formats.
 - [x] Run the tests before implementing `tools/publication.py`, then run them again after implementation.
 - [x] Add CI running only source checks and synthetic tests. Do not upload artifacts.
-- [ ] Inspect the staged diff and source-only check, commit with configured identity, push, open a PR linked to #1, and inspect CI before merging.
+- [x] Inspect the staged diff and source-only check, commit with configured identity, push, open a PR linked to #1, and inspect CI before merging. Completed in PR #15.
 
 The checker reads Git blobs from the index or a commit, so an unstaged replacement cannot conceal staged content. It permits reviewed text-source formats only. This supplements manual review; it cannot establish the provenance of arbitrary text.
 

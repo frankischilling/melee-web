@@ -2,7 +2,7 @@
 
 Melee Web is a browser runtime project for a locally owned NTSC-U Super Smash Bros. Melee 1.02 disc. Gecko supplies the GameCube runtime and WebGPU renderer. The Melee decompilation supplies symbols and behavior references.
 
-The project is under development. Browser boot, audio, and playable performance have not yet been verified. No game or console firmware is included.
+The project is under development. A Gecko WASM worker and local-disc launcher build successfully. Browser rendering and title-screen boot have not been verified; audio output and save persistence are not connected. No game or console firmware is included.
 
 ## Repositories
 
@@ -16,12 +16,14 @@ Project code is available under [GPL-3.0](LICENSE). The Melee source and upstrea
 
 ## Local development
 
-Use Python 3.11 or newer for repository tools. Runtime build requirements are recorded with the upstream audit.
+Use Python 3.11 or newer for repository tools and Node 22 or newer for the browser host. Follow [the browser runtime build guide](docs/browser-runtime.md) to build Gecko's pinned WASM package and start the local application.
 
 ```sh
 python -m unittest discover -s tests -v
 python -m compileall -q tools tests
 python tools/publication.py --staged
+npm ci
+npm test
 ```
 
 Put user-owned discs in `.private/discs/`, firmware in `.private/system/`, extraction in `.private/extracted/`, and runtime output in `.private/runtime/`. All of `.private/` is ignored. Do not serve the repository root with a static web server; serve the application build directory only.

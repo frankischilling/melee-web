@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Melee Web | Local runtime</title>
+    <link rel="stylesheet" href="./app.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Melee Web</h1>
+      <p>
+        Run your local Melee 1.02 disc through Gecko. Files stay on this
+        computer.
+      </p>
+      <p class="notice">
+        Development build. Audio and save persistence are not connected yet.
+        Browser compatibility and performance are under investigation.
+      </p>
+      <form id="launcher">
+        <label
+          >Melee ISO / GCM
+          <input id="disc" type="file" accept=".iso,.gcm" required
+        /></label>
+        <div class="firmware">
+          <label
+            >DSP ROM (8 KiB) <input id="irom" type="file" accept=".bin"
+          /></label>
+          <label
+            >DSP coefficient ROM (4 KiB)
+            <input id="coef" type="file" accept=".bin"
+          /></label>
+        </div>
+        <label class="diagnostic"
+          ><input id="diagnostic" type="checkbox" /> Run diagnostic boot without
+          DSP firmware</label
+        >
+        <p class="detail">
+          Diagnostic execution stops when DSP firmware is required and does not
+          establish game compatibility.
+        </p>
+        <button id="launch" type="submit" disabled>Launch local disc</button>
+        <button id="stop" type="button" disabled>Stop</button>
+        <button id="pause" type="button" disabled>Pause</button>
+      </form>
+      <p id="status" role="status" aria-live="polite">
+        Select a local disc to validate it.
+      </p>
+      <section id="screen" aria-label="Game display">
+        <canvas
+          width="640"
+          height="480"
+          tabindex="0"
+          aria-label="GameCube video output"
+        ></canvas>
+      </section>
+      <pre id="metrics" aria-label="Runtime diagnostics">
+Runtime has not started.</pre>
+      <p class="detail">
+        Keyboard: arrows move; X = A, Z = B, C = X, V = Y; Enter = Start; A/S =
+        L/R; D = Z. I/J/K/L control the D-pad. Numpad 4/6 and 8/2 move the
+        C-stick left/right and up/down. Standard gamepads use the first four
+        browser slots.
+      </p>
+    </main>
+    <script type="module" src="./main.mjs"></script>
+  </body>
+</html>
