@@ -26,4 +26,12 @@ python tools/publication.py --staged
 
 Put user-owned discs in `.private/discs/`, firmware in `.private/system/`, extraction in `.private/extracted/`, and runtime output in `.private/runtime/`. All of `.private/` is ignored. Do not serve the repository root with a static web server; serve the application build directory only.
 
+Validate a supported local disc without extracting it:
+
+```sh
+python tools/disc.py .private/discs/melee-ntsc-1.02.iso
+```
+
+See [local disc validation](docs/local-disc.md) for JSON reports, full-image fingerprints and optional private DOL extraction.
+
 Read [the private-data policy](docs/private-data.md) before working with a disc or runtime capture. Current work is tracked through [issues](https://github.com/frankischilling/melee-web/issues).
